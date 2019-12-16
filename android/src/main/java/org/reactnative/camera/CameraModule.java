@@ -399,7 +399,7 @@ public class CameraModule extends ReactContextBaseJavaModule {
                       promise.reject("E_CAMERA_UNAVAILABLE", "Camera is not running");
                   }
               } catch (Exception e) {
-                  promise.reject("E_CAMERA_BAD_VIEWTAG", "getAvailablePictureSizesAsync: Expected a Camera component");
+                  e.printStackTrace();
               }
           }
       });
@@ -433,9 +433,9 @@ public class CameraModule extends ReactContextBaseJavaModule {
             final RNCameraView cameraView;
             try {
                 cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
-                promise.resolve("getCameraFieldOfView() camera is open?", cameraView.isCameraOpened());
+                promise.resolve("getCameraFieldOfView() camera is open?", String(cameraView.isCameraOpened()));
             } catch (Exception e) {
-                promise.reject("E_GET_CAMER_FOV_FAIL", e.printStackTrace());
+                promise.reject("E_GET_CAMER_FOV_FAIL", "Something is wrong!");
             }
         }
     });
