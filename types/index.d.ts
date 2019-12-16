@@ -425,6 +425,7 @@ export class RNCamera extends Component<RNCameraProps & ViewProperties> {
 
   /** Android only */
   getSupportedRatiosAsync(): Promise<string[]>;
+  getFieldOfViewAync(): Promise<string[]>;
 
   /** iOS only */
   isRecording(): Promise<boolean>;

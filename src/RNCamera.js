@@ -542,7 +542,7 @@ export default class Camera extends React.Component<PropsType, StateType> {
     }
   }
 
-  async getFieldOfView() {
+  async getFieldOfViewAync() {
     if (Platform.OS === 'android') {
       return await CameraManager.getCameraFieldOfView();
     }
