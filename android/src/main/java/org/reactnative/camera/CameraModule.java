@@ -422,4 +422,9 @@ public class CameraModule extends ReactContextBaseJavaModule {
       }
       promise.resolve(false);
   }
+
+  @ReactMethod
+  public void getCameraFieldOfView(final Promise promise) {
+      promise.resolve("getCameraFieldOfView() accessed!");
+  }
 }
