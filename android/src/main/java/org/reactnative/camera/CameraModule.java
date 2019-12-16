@@ -424,7 +424,20 @@ public class CameraModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void getCameraFieldOfView(final Promise promise) {
-      promise.resolve("getCameraFieldOfView() accessed!");
+  public void getCameraFieldOfView(final int viewTag, final Promise promise) {
+    final ReactApplicationContext context = getReactApplicationContext();
+    UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
+    uiManager.addUIBlock(new UIBlock() {
+        @Override
+        public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+            final RNCameraView cameraView;
+            try {
+                cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
+                promise.resolve("getCameraFieldOfView() camera is open?", cameraView.isCameraOpened())
+            } catch (Exception e) {
+                promise.reject("E_GET_CAMER_FOV_FAIL", e.printStackTrace());
+            }
+        }
+    });
   }
 }
