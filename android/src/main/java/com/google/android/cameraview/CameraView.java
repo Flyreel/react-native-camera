@@ -341,6 +341,10 @@ public class CameraView extends FrameLayout {
         return mImpl.isCameraOpened();
     }
 
+    public boolean getCameraFieldOfView() {
+        return mImpl.isCameraOpened();
+    }
+
     /**
      * Add a new callback.
      *
