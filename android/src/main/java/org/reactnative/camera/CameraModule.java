@@ -424,7 +424,7 @@ public class CameraModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void getCameraFieldOfView(final Promise promise) {
+  public void getCameraFieldOfView(final int viewTag, final Promise promise) {
     try {
         cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
         promise.resolve(cameraView.cameraFieldOfView());
