@@ -341,8 +341,12 @@ public class CameraView extends FrameLayout {
         return mImpl.isCameraOpened();
     }
 
-    public boolean cameraFieldOfView() {
-        return mImpl.isCameraOpened();
+    public float getHorizontalViewAngle() {
+        return mImpl.getHorizontalViewAngle();
+    }
+
+    public float getVerticalViewAngle() {
+        return mImpl.getVerticalViewAngle();
     }
 
     /**

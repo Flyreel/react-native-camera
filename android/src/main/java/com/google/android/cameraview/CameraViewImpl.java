@@ -64,6 +64,10 @@ abstract class CameraViewImpl {
 
     abstract int getFacing();
 
+    abstract float getHorizontalViewAngle();
+
+    abstract float getVerticalViewAngle();
+
     abstract void setCameraId(String id);
 
     abstract String getCameraId();

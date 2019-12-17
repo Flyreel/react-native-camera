@@ -16,11 +16,14 @@
 
 package com.google.android.cameraview;
 
+import static android.R.attr.angle;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
+import android.graphics.PointF;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -40,6 +43,7 @@ import android.media.MediaRecorder;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.util.SparseIntArray;
+import android.util.SizeF;
 import android.view.Surface;
 import android.os.Handler;
 import android.os.Looper;
@@ -56,6 +60,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.HashMap;
 
 import org.reactnative.camera.utils.ObjectUtils;
 
@@ -266,6 +271,8 @@ class Camera2 extends CameraViewImpl implements MediaRecorder.OnInfoListener, Me
 
     private Rect mInitialCropRegion;
 
+    private final HashMap<String, PointF> mViewAngleMap = new HashMap<>();
+
     Camera2(Callback callback, PreviewImpl preview, Context context, Handler bgHandler) {
         super(callback, preview, bgHandler);
         mCameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
@@ -294,6 +301,34 @@ class Camera2 extends CameraViewImpl implements MediaRecorder.OnInfoListener, Me
                 stop();
             }
         });
+
+        try {
+            for (final String cameraId : mCameraManager.getCameraIdList()) {
+                CameraCharacteristics characteristics =
+                        mCameraManager.getCameraCharacteristics(cameraId);
+                @SuppressWarnings("ConstantConditions")
+                int orientation = characteristics.get(CameraCharacteristics.LENS_FACING);
+                if (orientation == CameraCharacteristics.LENS_FACING_BACK) {
+                    float[] maxFocus = characteristics.get(
+                            CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS);
+                    if (maxFocus == null) {
+                        continue;
+                    }
+                    SizeF size = characteristics.get(
+                            CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE);
+                    if (size == null) {
+                        continue;
+                    }
+                    float w = size.getWidth();
+                    float h = size.getHeight();
+                    mViewAngleMap.put(cameraId, new PointF(
+                            (float) Math.toDegrees(2*Math.atan(size.getWidth()/(maxFocus[0]*2))),
+                            (float) Math.toDegrees(2*Math.atan(size.getHeight()/(maxFocus[0]*2)))));
+                }
+            }
+        } catch (CameraAccessException e) {
+            throw new RuntimeException("Failed to get camera view angles", e);
+        }
     }
 
     @Override
@@ -348,6 +383,24 @@ class Camera2 extends CameraViewImpl implements MediaRecorder.OnInfoListener, Me
     @Override
     boolean isCameraOpened() {
         return mCamera != null;
+    }
+
+    @Override
+    float getHorizontalViewAngle() {
+        if (mCamera == null) {
+            return 0f;
+        }
+        PointF angles = mViewAngleMap.get(mCamera.getId());
+        return angles != null ? angles.x : 0f;
+    }
+
+    @Override
+    float getVerticalViewAngle() {
+        if (mCamera == null) {
+            return 0f;
+        }
+        PointF angles = mViewAngleMap.get(mCamera.getId());
+        return angles != null ? angles.y : 0f;
     }
 
     @Override
