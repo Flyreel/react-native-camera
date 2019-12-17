@@ -431,13 +431,14 @@ public class CameraModule extends ReactContextBaseJavaModule {
         @Override
         public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
             final RNCameraView cameraView;
-            try {
-                cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
-                promise.resolve("getting closer!");
-            } catch (Exception e) {
-                e.printStackTrace();
-                promise.reject("E_CAMERA_FAILED", e.getMessage());
-            }
+            promise.resolve("getting closer!");
+            // try {
+            //     cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
+            //     promise.resolve("getting closer!");
+            // } catch (Exception e) {
+            //     e.printStackTrace();
+            //     promise.reject("E_CAMERA_FAILED", e.getMessage());
+            // }
         }
     });
   }
