@@ -433,7 +433,11 @@ public class CameraModule extends ReactContextBaseJavaModule {
             final RNCameraView cameraView;
             try {
                 cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
-                promise.resolve(cameraView.getHorizontalViewAngle());
+                WritableMap angles = new WritableNativeMap();
+                angles.putDouble("horizontal", cameraView.getHorizontalViewAngle());
+                angles.putDouble("vertical", cameraView.getHorizontalViewAngle());
+
+                promise.resolve(angles);
             } catch (Exception e) {
                 e.printStackTrace();
                 promise.reject("E_CAMERA_FAILED", e.getMessage());
