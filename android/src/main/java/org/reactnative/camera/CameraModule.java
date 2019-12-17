@@ -433,7 +433,7 @@ public class CameraModule extends ReactContextBaseJavaModule {
             final RNCameraView cameraView;
             try {
                 cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
-                promise.resolve("getting closer!");
+                promise.resolve(cameraView.cameraFieldOfView());
             } catch (Exception e) {
                 e.printStackTrace();
                 promise.reject("E_CAMERA_FAILED", e.getMessage());
