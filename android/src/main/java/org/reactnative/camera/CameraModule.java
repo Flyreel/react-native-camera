@@ -428,25 +428,17 @@ public class CameraModule extends ReactContextBaseJavaModule {
     final ReactApplicationContext context = getReactApplicationContext();
     UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
     uiManager.addUIBlock(new UIBlock() {
-      @Override
-      public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
-          final RNCameraView cameraView;
-          try {
-              cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
-              WritableArray result = Arguments.createArray();
-              List<Properties> ids = cameraView.getCameraIds();
-              for (Properties p : ids) {
-                  WritableMap m = new WritableNativeMap();
-                  m.putString("id", p.getProperty("id"));
-                  m.putInt("type", Integer.valueOf(p.getProperty("type")));
-                  result.pushMap(m);
-              }
-              promise.resolve(result);
-          } catch (Exception e) {
-              e.printStackTrace();
-              promise.reject("E_CAMERA_FAILED", e.getMessage());
-          }
-      }
-  });
+        @Override
+        public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+            final RNCameraView cameraView;
+            try {
+                cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
+                promise.resolve("getting closer!");
+            } catch (Exception e) {
+                e.printStackTrace();
+                promise.reject("E_CAMERA_FAILED", e.getMessage());
+            }
+        }
+    });
   }
 }
