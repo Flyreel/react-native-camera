@@ -545,8 +545,11 @@ export default class Camera extends React.Component<PropsType, StateType> {
   async getFieldOfViewAync() {
     if (Platform.OS === 'android') {
       return await CameraManager.getCameraFieldOfView(this._cameraHandle);
+    } else {
+      return await CameraManager.getFOV();
     }
   }
+
 
   getAvailablePictureSizes = async (): string[] => {
     //$FlowFixMe
