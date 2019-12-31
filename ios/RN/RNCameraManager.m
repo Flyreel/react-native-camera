@@ -529,8 +529,8 @@ RCT_EXPORT_METHOD(getFOV:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejec
   }
 
   resolve(@{
-    "horizontal": [NSNumber numberWithDouble: backFov],
-    "frontCameraFOV": [NSNumber numberWithDouble: frontFov]
+    @"horizontal": [NSNumber numberWithDouble: backFov],
+    @"frontCameraFOV": [NSNumber numberWithDouble: frontFov]
   });
 }
 
