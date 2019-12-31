@@ -502,6 +502,38 @@ RCT_EXPORT_METHOD(isRecording:(nonnull NSNumber *)reactTag
         }];
 }
 
+RCT_EXPORT_METHOD(getFOV:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+  NSArray *devices = [AVCaptureDevice devices];
+  AVCaptureDevice *frontCamera;
+  AVCaptureDevice *backCamera;
+  double frontFov = 0.0;
+  double backFov = 0.0;
+
+  for (AVCaptureDevice *device in devices) {
+
+      NSLog(@"Device name: %@", [device localizedName]);
+
+      if ([device hasMediaType:AVMediaTypeVideo]) {
+
+          if ([device position] == AVCaptureDevicePositionBack) {
+              NSLog(@"Device position : back");
+              backCamera = device;
+              backFov = backCamera.activeFormat.videoFieldOfView;
+          }
+          else {
+              NSLog(@"Device position : front");
+              frontCamera = device;
+              frontFov = frontCamera.activeFormat.videoFieldOfView;
+          }
+      }
+  }
+
+  resolve(@{
+    [NSNumber numberWithInt:RCTCameraTypeBack]: [NSNumber numberWithDouble: backFov],
+    [NSNumber numberWithInt:RCTCameraTypeFront]: [NSNumber numberWithDouble: frontFov]
+  });
+}
+
 RCT_EXPORT_METHOD(getCameraIds:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
 
