@@ -103,7 +103,6 @@
 - (void)onText:(NSDictionary *)event;
 - (void)onBarcodesDetected:(NSDictionary *)event;
 - (bool)isRecording;
-- (bool)getFOV;
 - (void)onSubjectAreaChanged:(NSDictionary *)event;
 
 @end
