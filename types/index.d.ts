@@ -429,6 +429,7 @@ export class RNCamera extends Component<RNCameraProps & ViewProperties> {
 
   /** iOS only */
   isRecording(): Promise<boolean>;
+  getFOV(): Promise<string[]>;
 }
 
 interface DetectionOptions {
