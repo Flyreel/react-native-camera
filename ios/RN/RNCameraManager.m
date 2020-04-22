@@ -512,18 +512,21 @@ RCT_EXPORT_METHOD(getFOV:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejec
   for (AVCaptureDevice *device in devices) {
 
       NSLog(@"Device name: %@", [device localizedName]);
+      NSLog(@"Device type: %@", [device deviceType]);
+      NSLog(@"Device hasMediaType video: %d", [device hasMediaType:AVMediaTypeVideo]);
 
       if ([device hasMediaType:AVMediaTypeVideo]) {
-
           if ([device position] == AVCaptureDevicePositionBack) {
               NSLog(@"Device position : back");
               backCamera = device;
               backFov = backCamera.activeFormat.videoFieldOfView;
+              NSLog(@"Back Fov: %@", [NSNumber numberWithDouble: backFov]);
           }
           else {
               NSLog(@"Device position : front");
               frontCamera = device;
               frontFov = frontCamera.activeFormat.videoFieldOfView;
+              NSLog(@"Front Fov: %@", [NSNumber numberWithDouble: frontFov]);
           }
       }
   }
